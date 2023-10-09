@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 .bgImage{
-    background: url('./assets/bgImageL.jpg');
+    background: url('./assets/bgImage.jpg');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+  
 }
