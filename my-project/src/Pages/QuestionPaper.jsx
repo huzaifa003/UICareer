@@ -9,13 +9,18 @@ const QuestionPaper = () => {
   const [curr, setCurr] = useState(0);
   useEffect(() => {
     const fetchQuestion = async () => {
-      const response = await axios.get("http://localhost:3000/big5/questions");
-      setQuestions(response.data);
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/big5/questions"
+        );
+        setQuestions(response.data);
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+      }
     };
 
     fetchQuestion();
-  }, [limit, curr]);
-
+  }, []);
 
   const options = {
     A: "Strongly Agree",
@@ -30,7 +35,7 @@ const QuestionPaper = () => {
   const [isPrev, setIsPrev] = useState(true);
   const handleRadioChange = (index, option, value) => {
     const newAnswers = [...answers];
-    newAnswers[index] = value;
+    newAnswers[index + curr] = value; // Update the answers array based on the current question's index
     setAnswers(newAnswers);
   };
 
@@ -86,17 +91,21 @@ const QuestionPaper = () => {
                   >
                     <input
                       type="radio"
-                      name={`question${index + curr}`}
+                      name={index + curr + 1 + option}
                       value={index + curr + 1 + option}
+                      checked={
+                        answers[index + curr] === index + 1 + curr + option
+                      }
                       className="mr-2 "
                       onChange={() =>
                         handleRadioChange(
-                          index + curr,
+                          index,
                           option,
                           index + 1 + curr + option
                         )
                       }
                     />
+
                     <span className="text-sm">{option}.</span>
                     <span className="text-sm ">{options[option]}</span>
                   </label>
@@ -119,7 +128,7 @@ const QuestionPaper = () => {
           className="my-progress-bar"
           value={
             (answers.filter((element) => element !== undefined).length / 50) *
-            100
+            100 
           }
           max={100}
           min={0}
@@ -156,14 +165,16 @@ const QuestionPaper = () => {
               </button>
             )}
           </div>
-          {(answers.filter((element) => element !== undefined).length / 50) *100 ===100 &&(
+          {(answers.filter((element) => element !== undefined).length / 50) *
+            100 ===
+            100 && (
             <>
-            <button
-            className={`bg-[#C70039] text-white px-4 py-2 rounded `}
-            onClick={postAnswers}
-          >
-              <Link to="/Mbti">Go to Next Test</Link>
-          </button>
+              <button
+                className={`bg-[#C70039] text-white px-4 py-2 rounded `}
+                onClick={postAnswers}
+              >
+                <Link to="/Mbti">Go to Next Test</Link>
+              </button>
             </>
           )}
         </div>
