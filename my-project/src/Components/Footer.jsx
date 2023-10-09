@@ -1,4 +1,5 @@
 import React from 'react';
+import {AiFillFacebook, AiFillInstagram ,AiFillTwitterCircle} from 'react-icons/ai'
 
 const Footer = () => {
   return (
@@ -24,7 +25,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Facebook
+             <AiFillFacebook color='white' size={30}/>
             </a>
             <a
               href="#"
@@ -32,7 +33,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Twitter
+               <AiFillTwitterCircle color='white' size={30}/>
             </a>
             <a
               href="#"
@@ -40,7 +41,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Instagram
+              <AiFillInstagram color='white' size={30}/>
             </a>
           </div>
         </div>

@@ -5,11 +5,22 @@ import axios from "axios";
 
 const Disc = () => {
   const [questions, setQuestions] = useState(null);
-  const answersDict = {};
+  const [answersDict, setAnswersDict] = useState({});
+  const [curr, setCurr] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [isNext, setIsNext] = useState(true);
+  const [isPrev, setIsPrev] = useState(true);
 
+
+  // Function to update the answersDict when a radio button is changed
   const handleRadioChange = (index, value) => {
-    answersDict[index + 1] = value;
-    console.log(answersDict);
+    setAnswersDict((prevAnswersDict) => ({
+      ...prevAnswersDict,
+      [index]: {
+        questionNumber: index,
+        answer: value,
+      },
+    }));
   };
 
   useEffect(() => {
@@ -38,17 +49,27 @@ const Disc = () => {
       console.error("Error posting answers:", error);
     }
   };
+  const OnNext = () => {
+    if (limit < 24) {
+      setCurr((prevCurr) => prevCurr + 10);
+      setLimit((prevLimit) => prevLimit + 10);
+    } else {
+      setIsNext(false);
+    }
+  };
 
-  return (
-    <div className="container mx-auto p-4">
-      <div className="mb-6 p-4 border square-lg shadow-xl">
-        <p className="tex-15 font-bold fill-slate-600">
-            Choose The option that suits you the most
-        </p>
-      </div>
+  const OnPrev = () => {
+    setCurr((prevCurr) => prevCurr - 10);
+    setLimit((prevLimit) => prevLimit - 10);
+  };
+
+  function questionRendering (starting,ending){
+    return(
+      <>
       {questions ? (
-        questions.map((question, index) => (
-          <div key={index} className="mb-6 p-4 border rounded-lg shadow-md">
+        questions.slice(starting,ending).map((question, index) => (
+           
+          <div key={index + curr} className="mb-6 p-4 border rounded-lg shadow-md">
             <div className="flex gap-5">
               <h1 className="text-md font-semibold mb-2">{question.Number + "-"}</h1>
               <p className="text-md font-medium mb-2"> Are you: </p>
@@ -58,12 +79,11 @@ const Disc = () => {
               <label className="flex items-center">
                 <input
                   type="radio"
-                  name={`question${index}`}
+                  name={`question${index+curr}`}
                   value={question.Number + "A"}
                   className="mr-2"
-                  onChange={() =>
-                    handleRadioChange(index, question.Number + "A")
-                  }
+                  onChange={() => handleRadioChange(index+curr, question.number + "A")}
+                      checked={answersDict[index+curr]?.answer === question.number + "A"}
                 />
                 {question["A"]}
               </label>
@@ -74,9 +94,8 @@ const Disc = () => {
                   name={`question${index}`}
                   value={question.number + "B"}
                   className="mr-2"
-                  onChange={() =>
-                    handleRadioChange(index, question.Number + "D")
-                  }
+                  onChange={() => handleRadioChange(index+curr, question.number + "B")}
+                      checked={answersDict[index+curr]?.answer === question.number + "B"}
                 />
                 {question["B"]}
               </label>
@@ -87,9 +106,8 @@ const Disc = () => {
                   name={`question${index}`}
                   value={question.number + "C"}
                   className="mr-2"
-                  onChange={() =>
-                    handleRadioChange(index, question.Number + "C")
-                  }
+                  onChange={() => handleRadioChange(index+curr, question.number + "C")}
+                      checked={answersDict[index+curr]?.answer === question.number + "C"}
                 />
                 {question["C"]}
               </label>
@@ -100,9 +118,8 @@ const Disc = () => {
                   name={`question${index}`}
                   value={question.number + "D"}
                   className="mr-2"
-                  onChange={() =>
-                    handleRadioChange(index, question.Number + "D")
-                  }
+                  onChange={() => handleRadioChange(index+curr, question.number + "D")}
+                      checked={answersDict[index+curr]?.answer === question.number + "D"}
                 />
                 {question["D"]}
               </label>
@@ -112,25 +129,66 @@ const Disc = () => {
       ) : (
         <p>Loading questions...</p>
       )}
+      </>
+    )
+  }
+
+  return (
+    <div className="container mx-auto mb-6 ">
+      <Navbar />
+      <h1 className="text-3xl font-semibold mb-6 mt-6 ">
+        Multiple Choice Questions
+      </h1>
+      <progress
+        className="my-progress-bar"
+        value={(Object.keys(answersDict).length / 24) * 100}
+        max={100}
+        min={0}
+        style={{
+          width: "100%",
+          height: "10px",
+          backgroundColor: "green",
+        }}
+      />
+      <div className="grid grid-cols-2 gap-5 mt-5">
+        {questionRendering(curr, limit)}
+      </div>
       <div className="flex justify-between mt-6">
-        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-          <Link to="/Home">Save as Draft</Link>
-        </button>
-        <button
-          className={`bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 ${
-            Object.values(answersDict).includes("")
-              ? "cursor-not-allowed opacity-50"
-              : ""
-          }`}
-          disabled={Object.values(answersDict).includes("")}
-          onClick={postAnswers}
-        >
-          {Object.values(answersDict).includes("") ? (
-            "Please Complete the test"
-          ) : (
-            <Link to="/Result">View Result</Link>
+        <Link to="/Home">
+          <button className="bg-gradient-to-b from-[#184272] to-[#001834] text-white px-4 py-2 rounded ">
+            Save as Draft
+          </button>
+        </Link>
+        <div className="flex gap-5">
+          {limit !== 10 && isPrev && (
+            <button
+              className="bg-blue-600 p-2 text-white rounded-md"
+              onClick={OnPrev}
+            >
+              Previous Question
+            </button>
           )}
-        </button>
+          {limit < 24 && isNext && (
+            <button
+              className="bg-blue-600 p-2 text-white rounded-md"
+              onClick={OnNext}
+            >
+              Next Question
+            </button>
+          )}
+        </div>
+        {Object.keys(answersDict).length === 24 && (
+          <>
+          <Link to="/Result">
+            <button
+              className={`bg-[#C70039] text-white px-4 py-2 rounded  `}
+              onClick={postAnswers}
+            >
+             View Result
+            </button>
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );

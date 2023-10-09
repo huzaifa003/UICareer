@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 
 const Features = ({isRev , content , img ,title ,btnText}) => {
@@ -13,9 +14,11 @@ const Features = ({isRev , content , img ,title ,btnText}) => {
         {content}
         </p>
         <div className={` ${isRev?'text-left':'text-right'}`}>
+        <Link to='/Test'> 
           <button className="bg-[#C70039] hover:bg-red-900 text-white font-semibold px-6 py-3 mt-4 rounded-md transition duration-300">
             {btnText}
           </button>
+          </Link> 
         </div>
       </div>
     </div>
