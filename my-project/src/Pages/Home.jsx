@@ -1,21 +1,56 @@
 import React from 'react';
 import Navbar from '../Components/Navbar';
-import { Link } from 'react-router-dom';
+import Hero from '../Components/Hero';
+import Feature from '../Components/Features';
+import testImg from '../assets/feature3.png';
+import careerImg from '../assets/career.jpg';
+import personality from '../assets/personality.jpg'
+import collaboration from '../assets/collaboration.jpg'
+import Footer from '../Components/Footer';
+const featuresData = [
+  {
+    img: testImg,
+    title: 'Test Conduction',
+    content:
+      "Taking a career test plays a crucial role in shaping a student's future. These tests are invaluable tools that offer students insights into their strengths, weaknesses, and interests...",
+    isRev: false,
+    btnText: 'Give Test',
+  },
+  {
+    img: careerImg,
+    title: 'Career Guide',
+    content:
+      'A career guide is a valuable resource that offers expert advice and information to help individuals make informed decisions about their professional paths...',
+    isRev: true,
+    btnText: 'Get Career Suggestion',
+  },
+  {
+    img: personality,
+    title: 'Personality Analysis',
+    content:
+      'A career guide is a valuable resource that offers expert advice and information to help individuals make informed decisions about their professional paths...',
+    isRev: false,
+    btnText: 'Analyse your Personality',
+  },
+  {
+    img: collaboration,
+    title: 'Students Collaboration',
+    content:
+      'A career guide is a valuable resource that offers expert advice and information to help individuals make informed decisions about their professional paths...',
+    isRev: true,
+    btnText: 'Analyse your Personality',
+  },
+];
 
 const Home = () => {
   return (
     <div>
-     <Navbar/>
-     
-     <div className="flex flex-col justify-center items-center h-screen">
-        <h1 className="text-3xl font-semibold">
-          Welcome to <span className='text-red-950 font-bold'>ILM O IRFAN</span> Career Test
-        </h1>
-        <p className="mt-4 text-lg"> Give Test to Analyze your Personality </p>
-        <button className="bg-red-950 hover:bg-red-900 text-white font-semibold px-6 py-3 mt-8 rounded-full transition duration-300">
-         <Link to='/Test'>Start Test</Link> 
-        </button>
-    </div>
+      <Navbar />
+      <Hero />
+      {featuresData.map((feature, uniqueKey) => (
+        <Feature key={uniqueKey} {...feature} />
+      ))}
+      <Footer/>
     </div>
   );
 };

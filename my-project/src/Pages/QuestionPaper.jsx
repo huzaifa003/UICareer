@@ -14,38 +14,37 @@ const QuestionPaper = () => {
     }
     fetchQuestion()
   }, [])
-  const answersDict = {};
+
   const options = {"A": "Strongly Agree", "B": "Agree", "C": "Neutral", "D": "Disagree","E": "Strongly Disagree"};
   const [answers, setAnswers] = useState(Array(question.length).fill(""));  
+
   const handleRadioChange = (index, option, value) => {
-   answersDict[index+1] = value;
-   console.log(answersDict);
+    const newAnswers = [...answers];
+    newAnswers[index] = value;
+    setAnswers(newAnswers);
   };
 
   const isCompleteButtonDisabled = answers.includes("");
 
   const postAnswers = async () => {
     try {
-      const answers = Object.values(answersDict);
-      // Create an object to hold the answers and any other necessary data
-      const answersData = {
-        answers: answers, // Your array of answers
-   
-      };
-      const arrayAnswers = [];
-      const keys = Object.keys(answers);
+      if (!isCompleteButtonDisabled) {
+        const answersData = {
+          answers: Object.values(answers),
+        };
+        
+        const response = await axios.post('http://localhost:3000/big5', answersData);
+        
+        localStorage.setItem("test1", JSON.stringify(response.data.career));
 
-      const response = await axios.post('http://localhost:3000/big5', {answers});
-      
-     
-      localStorage.setItem("test1",  JSON.stringify(response.data.career))//now checkmujhe confirm nahen
-
-      console.log(response);
+        console.log(response);
+      } else {
+        console.warn('Please complete all questions before submitting.');
+      }
     } catch (error) {
       console.error('Error posting answers:', error);
     }
   };
-// we cant use props as it uses routers 
 
   return (
     <>

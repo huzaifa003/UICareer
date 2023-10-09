@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom'
 const Navbar = () => {
   return (
     <>
-<nav className="bg-red-950 p-4">
+<nav className="bg-gradient-to-b from-[#184272] to-[#001834] p-4">
         <div className="container mx-auto flex justify-between items-center">
-          <div className="text-white font-semibold text-xl">ILM O IRFAN</div>
+          <div className="text-white font-semibold text-xl">ILM O IRFAN <span className='text-sm'>Technologies</span></div>
           <ul className="flex space-x-4">
             <li>
               <a
