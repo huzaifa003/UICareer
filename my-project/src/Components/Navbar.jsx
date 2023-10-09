@@ -25,6 +25,15 @@ const Navbar = () => {
               
               </a>
             </li>
+            <li>
+              <a
+                href="#"
+                className="text-white hover:text-blue-300 transition duration-300"
+              >
+                <Link to='/'> Logout</Link> 
+              
+              </a>
+            </li>
            
           </ul>
         </div>
