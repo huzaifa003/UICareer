@@ -15,7 +15,19 @@ app.listen(port, () => {
 //     res.json(customers);
 // })
 
-app.get("/customers/:email",(req,res)=>{
+app.get("/customers/:email", async(req,res)=>{
+    const search = 'email : \' ' +  req.params.email +' \''
+    const customers = await stripe.customers.search({
+        
+        query: search
+      });
+
+      console.log(customers)
+
     console.log(req.params.email)
+
+
     res.send(req.params.email);
+
+
 })
