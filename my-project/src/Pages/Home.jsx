@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../Components/Navbar';
 import Hero from '../Components/Hero';
 import Feature from '../Components/Features';
@@ -7,6 +7,9 @@ import careerImg from '../assets/career.jpg';
 import personality from '../assets/personality.jpg'
 import collaboration from '../assets/collaboration.jpg'
 import Footer from '../Components/Footer';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+import { app, auth } from '../Components/FirebaseAuth';
 const featuresData = [
   {
     img: testImg,
@@ -43,6 +46,24 @@ const featuresData = [
 ];
 
 const Home = () => {
+  const [email, setEmail] = useState('')
+  const navigate = useNavigate();
+  useEffect(()=>{
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
+        const uid = user.uid;
+        console.log(auth.currentUser.email);
+        setEmail(auth.currentUser.email);
+        // ...
+      } else {
+        // User is signed out
+        // ...
+        navigate("/")
+      }
+    });
+  },[])
   return (
     <div>
       <Navbar />
