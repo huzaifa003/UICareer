@@ -1,9 +1,19 @@
-const express = require('express')
-const stripe = require('stripe')
-('sk_test_51NzCbJCEAatbUnpu2tvuuXqlFDDVZrdryokBcPLqUC9jmO2lqYRD5uBthLHE22GsyHEeHKSUCM0R2muAlrEBWheX001k1JtwUJ');
-
+const express = require('express');
+const stripe = require('stripe')('sk_test_51NzCbJCEAatbUnpu2tvuuXqlFDDVZrdryokBcPLqUC9jmO2lqYRD5uBthLHE22GsyHEeHKSUCM0R2muAlrEBWheX001k1JtwUJ')
+const bodyParser = require('body-parser')
+const cors = require('cors')
+app = express()
 const port = 3003;
-const app = express()
+
+
+// Middleware to parse JSON requests
+app.use(express.json());
+
+// app.use(bodyParser.urlencoded({ extended: false }))
+
+app.use(cors({
+    origin: '*'
+}));
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
@@ -26,8 +36,15 @@ app.get("/customers/:email", async(req,res)=>{
 
     console.log(req.params.email)
 
-
-    res.send(req.params.email);
+    if (customers['data'].length > 0){
+        res.send({"payment": 1})
+        return;
+    }
+    else{
+        res.send({"payment": 0});
+        return;
+    }
+    
 
 
 })
