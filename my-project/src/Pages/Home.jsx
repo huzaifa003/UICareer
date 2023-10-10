@@ -11,6 +11,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 import { app, auth } from '../Components/FirebaseAuth';
 import axios from 'axios';
+import Loading from '../Components/Loading';
 const featuresData = [
   {
     img: testImg,
@@ -47,25 +48,25 @@ const featuresData = [
 ];
 
 const Home = () => {
-  const [text,setText] = useState('');
+  const [text, setText] = useState('');
   const [email, setEmail] = useState('')
   const [url, setUrl] = useState('');
   const navigate = useNavigate();
-  useEffect(()=>{
+  useEffect(() => {
 
     async function checkPayment(mail) {
       console.log(mail);
       const response = await axios.get("http://localhost:3003/customers/" + mail)
       console.log(response.data);
-      if (response.data.payment === 1){
+      if (response.data.payment === 1) {
         setUrl("/Test");
         setText('Take Test');
       }
-      else{
+      else {
         setText('Make Payment')
         setUrl("https://buy.stripe.com/test_3csg213h3a7R42k9AA?prefilled_email=" + mail);
       }
-      
+
     }
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -85,20 +86,27 @@ const Home = () => {
       }
     });
 
-  
-  },[])
+
+  }, [])
   return (
-    
     <div>
-      {console.log(url)}
-      <Navbar />
-      <Hero />
-      {featuresData.map((feature, uniqueKey) => (
-        <Feature key={uniqueKey} text={text} url={url} {...feature} />
-      ))}
-      <Footer/>
+      {text === '' ? <Loading></Loading> :
+
+
+
+        <div>
+          {console.log(url)}
+          <Navbar />
+          <Hero />
+          {featuresData.map((feature, uniqueKey) => (
+            <Feature key={uniqueKey} text={text} url={url} {...feature} />
+          ))}
+          <Footer />
+        </div>
+      
+}
     </div>
-  );
+  )
 };
 
 export default Home;
