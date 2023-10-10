@@ -2,8 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 
-const Features = ({isRev , content , img ,title ,btnText}) => {
+const Features = ({isRev , content , img ,title ,btnText, url, text}) => {
+  {console.log(url)}
   return (
+    
     <div className={`flex flex-col ${isRev?'md:flex-row-reverse':'md:flex-row'} md:space-x-4 items-center py-8 px-4`}>
       <div className="md:w-1/4">
         <img className="w-full md:w-auto" src={img} alt="Feature" />
@@ -14,9 +16,9 @@ const Features = ({isRev , content , img ,title ,btnText}) => {
         {content}
         </p>
         <div className={` ${isRev?'text-left':'text-right'}`}>
-        <Link to='/Test'> 
+        <Link target="_blank" to={url}> 
           <button className="bg-[#C70039] hover:bg-red-900 text-white font-semibold px-6 py-3 mt-4 rounded-md transition duration-300">
-            {btnText}
+            {text}
           </button>
           </Link> 
         </div>
