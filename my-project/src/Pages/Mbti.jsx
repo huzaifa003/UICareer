@@ -126,11 +126,11 @@ const Mbti = () => {
         {questionRendering(curr, limit)}
       </div>
       <div className="flex justify-between mt-6">
-        <Link to="/Home">
+        {/* <Link to="/Home">
           <button className="bg-gradient-to-b from-[#184272] to-[#001834] text-white px-4 py-2 rounded ">
             Save as Draft
           </button>
-        </Link>
+        </Link> */}
         <div className="flex gap-5">
           {limit !== 10 && isPrev && (
             <button
