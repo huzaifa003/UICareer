@@ -9,10 +9,13 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
-app.get("/customers", async(req, res)=>{
-    const customers = await stripe.customers.list({
-        limit: 3,
-      });
+// app.get("/customers", async(req, res)=>{
+//     const customers = await stripe.customers.list();
 
-    res.json(customers);
+//     res.json(customers);
+// })
+
+app.get("/customers/:email",(req,res)=>{
+    console.log(req.params.email)
+    res.send(req.params.email);
 })
