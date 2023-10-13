@@ -111,78 +111,98 @@ const results = {
     "24C": "I",
     "24A": "S",
     "24B": "C"
-  }
+}
 
-  
-  const questions = [
-    {"Number": 1, "A": "Restrained", "B": "Forceful", "C": "Careful", "D": "Expressive"},
-    {"Number": 2, "A": "Pioneering", "B": "Correct", "C": "Exciting", "D": "Satisfied"},
-    {"Number": 3, "A": "Willing", "B": "Animated", "C": "Bold", "D": "Precise"},
-    {"Number": 4, "A": "Argumentative", "B": "Doubting", "C": "Indecisive", "D": "Unpredictable"},
-    {"Number": 5, "A": "Respectful", "B": "Out-going", "C": "Patient", "D": "Daring"},
-    {"Number": 6, "A": "Persuasive", "B": "Self-reliant", "C": "Logical", "D": "Gentle"},
-    {"Number": 7, "A": "Cautious", "B": "Even-tempered", "C": "Decisive", "D": "Life-of-the-party"},
-    {"Number": 8, "A": "Popular", "B": "Assertive", "C": "Perfectionist", "D": "Generous"},
-    {"Number": 9, "A": "Colorful", "B": "Modest", "C": "Easy-going", "D": "Unyielding"},
-    {"Number": 10, "A": "Systematic", "B": "Optimistic", "C": "Persistent", "D": "Accommodating"},
-    {"Number": 11, "A": "Relentless", "B": "Humble", "C": "Neighborly", "D": "Talkative"},
-    {"Number": 12, "A": "Friendly", "B": "Observant", "C": "Playful", "D": "Strong-willed"},
-    {"Number": 13, "A": "Charming", "B": "Adventurous", "C": "Disciplined", "D": "Deliberate"},
-    {"Number": 14, "A": "Restrained", "B": "Steady", "C": "Aggressive", "D": "Attractive"},
-    {"Number": 15, "A": "Enthusiastic", "B": "Analytical", "C": "Sympathetic", "D": "Determined"},
-    {"Number": 16, "A": "Commanding", "B": "Impulsive", "C": "Slow-paced", "D": "Critical"},
-    {"Number": 17, "A": "Consistent", "B": "Force-of-character", "C": "Lively", "D": "Laid-back"},
-    {"Number": 18, "A": "Influential", "B": "Kind", "C": "Independent", "D": "Orderly"},
-    {"Number": 19, "A": "Idealistic", "B": "Popular", "C": "Pleasant", "D": "Out-spoken"},
-    {"Number": 20, "A": "Impatient", "B": "Serious", "C": "Procrastinator", "D": "Emotional"},
-    {"Number": 21, "A": "Competitive", "B": "Spontaneous", "C": "Loyal", "D": "Thoughtful"},
-    {"Number": 22, "A": "Self-sacrificing", "B": "Considerate", "C": "Convincing", "D": "Courageous"},
-    {"Number": 23, "A": "Dependent", "B": "Flighty", "C": "Stoic", "D": "Pushy"},
-    {"Number": 24, "A": "Tolerant", "B": "Conventional", "C": "Stimulating", "D": "Directing"}
+
+const questions = [
+    { "Number": 1, "A": "Restrained", "B": "Forceful", "C": "Careful", "D": "Expressive" },
+    { "Number": 2, "A": "Pioneering", "B": "Correct", "C": "Exciting", "D": "Satisfied" },
+    { "Number": 3, "A": "Willing", "B": "Animated", "C": "Bold", "D": "Precise" },
+    { "Number": 4, "A": "Argumentative", "B": "Doubting", "C": "Indecisive", "D": "Unpredictable" },
+    { "Number": 5, "A": "Respectful", "B": "Out-going", "C": "Patient", "D": "Daring" },
+    { "Number": 6, "A": "Persuasive", "B": "Self-reliant", "C": "Logical", "D": "Gentle" },
+    { "Number": 7, "A": "Cautious", "B": "Even-tempered", "C": "Decisive", "D": "Life-of-the-party" },
+    { "Number": 8, "A": "Popular", "B": "Assertive", "C": "Perfectionist", "D": "Generous" },
+    { "Number": 9, "A": "Colorful", "B": "Modest", "C": "Easy-going", "D": "Unyielding" },
+    { "Number": 10, "A": "Systematic", "B": "Optimistic", "C": "Persistent", "D": "Accommodating" },
+    { "Number": 11, "A": "Relentless", "B": "Humble", "C": "Neighborly", "D": "Talkative" },
+    { "Number": 12, "A": "Friendly", "B": "Observant", "C": "Playful", "D": "Strong-willed" },
+    { "Number": 13, "A": "Charming", "B": "Adventurous", "C": "Disciplined", "D": "Deliberate" },
+    { "Number": 14, "A": "Restrained", "B": "Steady", "C": "Aggressive", "D": "Attractive" },
+    { "Number": 15, "A": "Enthusiastic", "B": "Analytical", "C": "Sympathetic", "D": "Determined" },
+    { "Number": 16, "A": "Commanding", "B": "Impulsive", "C": "Slow-paced", "D": "Critical" },
+    { "Number": 17, "A": "Consistent", "B": "Force-of-character", "C": "Lively", "D": "Laid-back" },
+    { "Number": 18, "A": "Influential", "B": "Kind", "C": "Independent", "D": "Orderly" },
+    { "Number": 19, "A": "Idealistic", "B": "Popular", "C": "Pleasant", "D": "Out-spoken" },
+    { "Number": 20, "A": "Impatient", "B": "Serious", "C": "Procrastinator", "D": "Emotional" },
+    { "Number": 21, "A": "Competitive", "B": "Spontaneous", "C": "Loyal", "D": "Thoughtful" },
+    { "Number": 22, "A": "Self-sacrificing", "B": "Considerate", "C": "Convincing", "D": "Courageous" },
+    { "Number": 23, "A": "Dependent", "B": "Flighty", "C": "Stoic", "D": "Pushy" },
+    { "Number": 24, "A": "Tolerant", "B": "Conventional", "C": "Stimulating", "D": "Directing" }
 ]
 
-const careers ={
+const careers = {
     "D": [
-      "CEO",
-      "Entrepreneur",
-      "Lawyer",
-      "Manager",
-      "Sales Manager",
-      "Engineer",
-      "Military Officer",
-      "Pilot"
+        "CEO",
+        "Entrepreneur",
+        "Lawyer",
+        "Manager",
+        "Sales Manager",
+        "Engineer",
+        "Military Officer",
+        "Pilot"
     ],
     "I": [
-      "Salesperson",
-      "Marketing Specialist",
-      "Public Relations Specialist",
-      "Event Planner",
-      "Actor/Entertainer",
-      "Politician",
-      "Teacher/Trainer",
-      "Customer Service Representative"
+        "Salesperson",
+        "Marketing Specialist",
+        "Public Relations Specialist",
+        "Event Planner",
+        "Actor/Entertainer",
+        "Politician",
+        "Teacher/Trainer",
+        "Customer Service Representative"
     ],
     "S": [
-      "Nurse",
-      "Counselor/Therapist",
-      "Human Resources Specialist",
-      "Social Worker",
-      "Administrative Assistant",
-      "Librarian",
-      "Customer Support Representative",
-      "Accountant"
+        "Nurse",
+        "Counselor/Therapist",
+        "Human Resources Specialist",
+        "Social Worker",
+        "Administrative Assistant",
+        "Librarian",
+        "Customer Support Representative",
+        "Accountant"
     ],
     "C": [
-      "Scientist/Researcher",
-      "Software Developer/Engineer",
-      "Accountant",
-      "Architect",
-      "Statistician",
-      "Quality Control Specialist",
-      "Financial Analyst",
-      "Technical Writer"
+        "Scientist/Researcher",
+        "Software Developer/Engineer",
+        "Accountant",
+        "Architect",
+        "Statistician",
+        "Quality Control Specialist",
+        "Financial Analyst",
+        "Technical Writer"
     ]
-  }
+}
+
+const personalityDescription = {
+    "D": {
+        "description": "Assertive and results-oriented, D-types are natural leaders who thrive in challenging situations and focus on achieving goals.",
+        "fullForm": "Dominance"
+    },
+    "I": {
+        "description": "Enthusiastic and sociable, I-types are outgoing individuals who enjoy interacting with people, inspiring others, and building relationships.",
+        "fullForm": "Influence"
+    },
+    "S": {
+        "description": "Patient and dependable, S-types are reliable team players who value stability, cooperation, and harmony in their relationships and work environments.",
+        "fullForm": "Steadiness"
+    },
+    "C": {
+        "description": "Detail-oriented and analytical, C-types are systematic thinkers who prioritize accuracy, precision, and adherence to rules and procedures in their tasks and projects.",
+        "fullForm": "Conscientiousness"
+    }
+}
+
 
 // Middleware to parse JSON requests
 app.use(express.json());
@@ -195,7 +215,7 @@ app.get('/disc/questions', (req, res) => {
 
 // POST request to add a new user
 app.post('/disc', (req, res) => {
-    const tally = {"D":0, "I": 0, "S": 0,"C": 0};
+    const tally = { "D": 0, "I": 0, "S": 0, "C": 0 };
     const answers = req.body.answers;
     answers.forEach(element => {
         tally[results[element]]++;
@@ -205,30 +225,30 @@ app.post('/disc', (req, res) => {
     let maxIndex = 0;
     for (let index = 0; index < values.length - 1; index++) {
         const element = values[index];
-        if (values[index + 1] > element){
-            maxIndex = index+1;
+        if (values[index + 1] > element) {
+            maxIndex = index + 1;
         }
     }
 
     const maxInd = values.indexOf(Math.max(...values));
     let maxValue;
-    if (maxInd == 0){
+    if (maxInd == 0) {
         maxValue = "D"
     }
-    else if (maxInd == 1){
+    else if (maxInd == 1) {
         maxValue = "I"
     }
-    else if (maxInd == 2){
+    else if (maxInd == 2) {
         maxValue = "S"
     }
-    else if (maxInd == 3){
+    else if (maxInd == 3) {
         maxValue = "C"
     }
     console.log(tally);
     console.log(maxInd);
     console.log(maxValue)
     console.log(careers[maxValue])
-    res.send(200,{"personality" : maxValue,  "career" : careers[maxValue]});
+    res.send(200, { "personality": personalityDescription[maxValue], "career": careers[maxValue] });
 });
 
 // Start the server

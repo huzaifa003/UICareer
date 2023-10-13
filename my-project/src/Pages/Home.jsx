@@ -59,7 +59,7 @@ const Home = () => {
       const response = await axios.get("http://localhost:3003/customers/" + mail)
       console.log(response.data);
       if (response.data.payment === 1) {
-        setUrl("/Test");
+        setUrl("/DISC");
         setText('Take Test');
       }
       else {

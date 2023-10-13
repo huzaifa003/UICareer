@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../Components/Navbar";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
+import { auth, db } from "../Components/FirebaseAuth";
+import { get, set, ref, onValue } from "@firebase/database";
+import { onAuthStateChanged } from "@firebase/auth";
+import { useNavigate } from 'react-router-dom';
 const Disc = () => {
   const [questions, setQuestions] = useState(null);
   const [answersDict, setAnswersDict] = useState({});
@@ -10,7 +13,62 @@ const Disc = () => {
   const [limit, setLimit] = useState(10);
   const [isNext, setIsNext] = useState(true);
   const [isPrev, setIsPrev] = useState(true);
+  const [draftColor, setDraftColor] = useState("bg-gradient-to-b from-[#184272] to-[#001834] text-white px-4 py-2 rounded")
+  const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState('')
 
+  const navigate = useNavigate();
+
+
+  async function saveDraft() {
+    await set(ref(db, "users/" + username + "/disc"), {
+      "answersDict": answersDict
+    }).then((value) => {
+      setDraftColor("bg-green text-white px-4 py-2 rounded")
+    })
+    setDraftColor("bg-green-500 text-white px-4 py-2 rounded")
+  }
+
+  async function getDraft() {
+    console.log(username);
+    const snapshot = await get(ref(db, "users/" + username + "/disc"))
+    if (snapshot.exists()) {
+      setAnswersDict(snapshot.val().answersDict)
+      setDraftColor("bg-green-500 text-white px-4 py-2 rounded")
+    }
+    else {
+      console.log(snapshot.val())
+      console.log("No Draft Available");
+    }
+
+    // get(child(dbRef, `users/${userId}`)).then((snapshot) => {
+    //   if (snapshot.exists()) {
+    //     console.log(snapshot.val());
+    //   } else {
+    //     console.log("No data available");
+    //   }
+    // }).catch((error) => {
+    //   console.error(error);
+    // });
+
+  }
+  async function writeUserData(personality, careerMap) {
+
+    await set(ref(db, "users/" + username), {
+      "progress": 3
+    })
+    console.log("-------------------------------")
+    console.log(personality, careerMap, answersDict)
+    await set(ref(db, 'users/' + username + "/disc"), {
+      "personality": personality,
+      "careerMap": careerMap,
+      "answersDict": answersDict,
+
+    }).then((response) => {
+      console.log(response)
+
+    })
+  }
 
   // Function to update the answersDict when a radio button is changed
   const handleRadioChange = (index, value) => {
@@ -21,16 +79,39 @@ const Disc = () => {
         answer: value,
       },
     }));
+
+    setDraftColor("bg-gradient-to-b from-[#184272] to-[#001834] text-white px-4 py-2 rounded");
   };
 
+  
+
+  
   useEffect(() => {
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUsername(user.email.split("@")[0])
+        console.log(username)
+      }
+      else {
+        navigate("/")
+      }
+    })
+
+    console.log(loading);
+
     const fetchQuestion = async () => {
       const response = await axios.get("http://localhost:3002/disc/questions");
       console.log(response.data);
       setQuestions(response.data);
     };
+
+    
     fetchQuestion();
-  }, []);
+
+    getDraft();
+    setLoading(false);
+  }, [username]);
 
   const postAnswers = async () => {
     try {
@@ -43,8 +124,11 @@ const Disc = () => {
       listData.push(JSON.parse(localStorage.getItem('test1')))
       listData.push(JSON.parse(localStorage.getItem('test2')))
       listData.push(response.data.career)
-    //   console.log(response);
-    console.log(listData);
+
+      // while (response != null || response !=)
+      const res = await writeUserData(response.data.personality, response.data.career)
+      //   console.log(response);
+      console.log(listData);
     } catch (error) {
       console.error("Error posting answers:", error);
     }
@@ -63,72 +147,72 @@ const Disc = () => {
     setLimit((prevLimit) => prevLimit - 10);
   };
 
-  function questionRendering (starting,ending){
-    return(
+  function questionRendering(starting, ending) {
+    return (
       <>
-      {questions ? (
-        questions.slice(starting,ending).map((question, index) => (
-           
-          <div key={index + curr} className="mb-6 p-4 border rounded-lg shadow-md">
-            <div className="flex gap-5">
-              <h1 className="text-md font-semibold mb-2">{question.Number + "-"}</h1>
-              <p className="text-md font-medium mb-2"> Are you: </p>
+        {questions ? (
+          questions.slice(starting, ending).map((question, index) => (
+
+            <div key={index + curr} className="mb-6 p-4 border rounded-lg shadow-md">
+              <div className="flex gap-5">
+                <h1 className="text-md font-semibold mb-2">{question.Number + "-"}</h1>
+                <p className="text-md font-medium mb-2"> Are you: </p>
+              </div>
+
+              <div className="flex flex-row gap-5 ">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name={`question${index + curr}`}
+                    value={question.Number + "A"}
+                    className="mr-2"
+                    onChange={() => handleRadioChange(index + curr, question.Number + "A")}
+                    checked={answersDict[index + curr]?.answer === question.Number + "A"}
+                  />
+                  {question["A"]}
+                </label>
+
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name={`question${index}`}
+                    value={question.Number + "B"}
+                    className="mr-2"
+                    onChange={() => handleRadioChange(index + curr, question.Number + "B")}
+                    checked={answersDict[index + curr]?.answer === question.Number + "B"}
+                  />
+                  {question["B"]}
+                </label>
+
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name={`question${index}`}
+                    value={question.Number + "C"}
+                    className="mr-2"
+                    onChange={() => handleRadioChange(index + curr, question.Number + "C")}
+                    checked={answersDict[index + curr]?.answer === question.Number + "C"}
+                  />
+                  {question["C"]}
+                </label>
+
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name={`question${index}`}
+                    value={question.Number + "D"}
+                    className="mr-2"
+                    onChange={() => handleRadioChange(index + curr, question.Number + "D")}
+                    checked={answersDict[index + curr]?.answer === question.Number + "D"}
+                  />
+                  {question["D"]}
+                </label>
+              </div>
             </div>
-
-            <div className="flex flex-row gap-5 ">
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name={`question${index+curr}`}
-                  value={question.Number + "A"}
-                  className="mr-2"
-                  onChange={() => handleRadioChange(index+curr, question.number + "A")}
-                      checked={answersDict[index+curr]?.answer === question.number + "A"}
-                />
-                {question["A"]}
-              </label>
-
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name={`question${index}`}
-                  value={question.number + "B"}
-                  className="mr-2"
-                  onChange={() => handleRadioChange(index+curr, question.number + "B")}
-                      checked={answersDict[index+curr]?.answer === question.number + "B"}
-                />
-                {question["B"]}
-              </label>
-
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name={`question${index}`}
-                  value={question.number + "C"}
-                  className="mr-2"
-                  onChange={() => handleRadioChange(index+curr, question.number + "C")}
-                      checked={answersDict[index+curr]?.answer === question.number + "C"}
-                />
-                {question["C"]}
-              </label>
-
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name={`question${index}`}
-                  value={question.number + "D"}
-                  className="mr-2"
-                  onChange={() => handleRadioChange(index+curr, question.number + "D")}
-                      checked={answersDict[index+curr]?.answer === question.number + "D"}
-                />
-                {question["D"]}
-              </label>
-            </div>
-          </div>
-        ))
-      ) : (
-        <p>Loading questions...</p>
-      )}
+          ))
+        ) : (
+          <p>Loading questions...</p>
+        )}
       </>
     )
   }
@@ -154,11 +238,11 @@ const Disc = () => {
         {questionRendering(curr, limit)}
       </div>
       <div className="flex justify-between mt-6">
-        <Link to="/Home">
-          <button className="bg-gradient-to-b from-[#184272] to-[#001834] text-white px-4 py-2 rounded ">
-            Save as Draft
-          </button>
-        </Link>
+
+        <button onClick={saveDraft} className={draftColor}>
+          Save as Draft
+        </button>
+
         <div className="flex gap-5">
           {limit !== 10 && isPrev && (
             <button
@@ -179,13 +263,13 @@ const Disc = () => {
         </div>
         {Object.keys(answersDict).length === 24 && (
           <>
-          <Link to="/Result">
-            <button
-              className={`bg-[#C70039] text-white px-4 py-2 rounded  `}
-              onClick={postAnswers}
-            >
-             View Result
-            </button>
+            <Link to="/Result">
+              <button
+                className={`bg-[#C70039] text-white px-4 py-2 rounded  `}
+                onClick={postAnswers}
+              >
+                View Result
+              </button>
             </Link>
           </>
         )}
