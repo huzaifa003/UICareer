@@ -2,9 +2,28 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../Components/Navbar";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { db } from "../Components/FirebaseAuth";
+import { set, ref } from "@firebase/database";
 import Break from "../Components/Break";
 
 const QuestionPaper = () => {
+
+  async function writeUserData(personality, careerMap) {
+    
+    await set(ref(db, "users/" + email), {
+      "progress": 1
+    })
+    await set(ref(db, 'users/' + email + "/big5"), {
+      "personality": personality,
+      "careerMap": careerMap,
+    }).then((response)=>{
+      console.log(response)
+      localStorage.setItem({"hello": response});
+    })
+  }
+
+
+
   const [question, setQuestions] = useState([]);
   const [limit, setLimit] = useState(10);
   const [curr, setCurr] = useState(0);
@@ -23,12 +42,14 @@ const QuestionPaper = () => {
 
  
   useEffect(() => {
+    console.log(db);
     const fetchQuestion = async () => {
       try {
         const response = await axios.get(
           "http://localhost:3000/big5/questions"
         );
         setQuestions(response.data);
+
       } catch (error) {
         console.error("Error fetching questions:", error);
       }
@@ -52,6 +73,7 @@ const QuestionPaper = () => {
     const newAnswers = [...answers];
     newAnswers[index + curr] = value; // Update the answers array based on the current question's index
     setAnswers(newAnswers);
+    console.log("HELO");
   };
 
   const OnNext = () => {
@@ -80,8 +102,8 @@ const QuestionPaper = () => {
       );
 
       localStorage.setItem("test1", JSON.stringify(response.data.career));
-
-      console.log(response);
+      const res = await writeUserData(response.data.personality, response.data.career);
+      console.log(res);
     } catch (error) {
       console.error("Error posting answers:", error);
     }
@@ -150,7 +172,7 @@ const QuestionPaper = () => {
           className="my-progress-bar"
           value={
             (answers.filter((element) => element !== undefined).length / 50) *
-            100 
+            100
           }
           max={100}
           min={0}
@@ -164,11 +186,11 @@ const QuestionPaper = () => {
           {questionRendering(curr, limit)}
         </div>
         <div className="flex justify-between mt-6">
-          <Link to="/Home">
+          {/* <Link to="/Home">
             <button className="bg-gradient-to-b from-[#184272] to-[#001834] text-white px-4 py-2 rounded hover:bg-blue-600">
               Save as Draft
             </button>
-          </Link>
+          </Link> */}
           <div className="flex gap-5">
             {limit !== 10 && isPrev && (
               <button
@@ -190,15 +212,15 @@ const QuestionPaper = () => {
           {(answers.filter((element) => element !== undefined).length / 50) *
             100 ===
             100 && (
-            <>
-              <button
-                className={`bg-[#C70039] text-white px-4 py-2 rounded `}
-                onClick={postAnswers}
-              >
-                <Link to="/Mbti">Go to Next Test</Link>
-              </button>
-            </>
-          )}
+              <>
+                <button
+                  className={`bg-[#C70039] text-white px-4 py-2 rounded `}
+                  onClick={postAnswers}
+                >
+                  <Link to="/Mbti">Go to Next Test</Link>
+                </button>
+              </>
+            )}
         </div>
       </div>
       </>
