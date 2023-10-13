@@ -258,12 +258,12 @@ const Disc = () => {
               {questionRendering(curr, limit)}
             </div>
             <div className="flex justify-between mt-6">
-              <Link to="/Home">
+              
                 <button onClick={saveDraft} className={draftColor}>
                   Save as Draft
                 </button>
 
-              </Link>
+              
               <div className="flex gap-5">
                 {limit !== 10 && isPrev && (
                   <button
