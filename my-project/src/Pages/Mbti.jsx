@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../Components/Navbar";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Break from "../Components/Break";
 
 const Mbti = () => {
   const [questions, setQuestions] = useState(null);
@@ -10,7 +11,16 @@ const Mbti = () => {
   const [limit, setLimit] = useState(10);
   const [isNext, setIsNext] = useState(true);
   const [isPrev, setIsPrev] = useState(true);
+const [isloading,setIsLoading] = useState(true)
 
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setIsLoading(false);
+  }, 10000); // 10 seconds
+
+  return () => clearTimeout(timer); // Clear timeout if the component unmounts
+
+}, []);
   // Function to update the answersDict when a radio button is changed
   const handleRadioChange = (index, value) => {
     setAnswersDict((prevAnswersDict) => ({
@@ -61,6 +71,7 @@ const Mbti = () => {
   function questionRendering(starting, ending) {
     return (
       <>
+    
         {questions ? (
           questions.slice(starting, ending).map((question, index) => {
             const answerKey = index + curr;
@@ -106,11 +117,18 @@ const Mbti = () => {
   }
   
   return (
-    <div className="container mx-auto mb-6 ">
+    <>
+    {isloading ? (
+      <div><Break/></div>
+    ) : (
+    <div className=" mx-auto mb-6 w-full ">
       <Navbar />
-      <h1 className="text-3xl font-semibold mb-6 mt-6 ">
+      <h1 className="text-3xl font-semibold mb-6 mt-6 px-10 ">
         Multiple Choice Questions
       </h1>
+      <div className="px-10">
+
+
       <progress
         className="my-progress-bar"
         value={(Object.keys(answersDict).length / 50) * 100}
@@ -161,7 +179,11 @@ const Mbti = () => {
         )}
       </div>
     </div>
+    </div>
+  )}
+  </>
   );
+  
 };
 
 export default Mbti;

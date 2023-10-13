@@ -2,12 +2,24 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../Components/Navbar";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Break from "../Components/Break";
 
 const QuestionPaper = () => {
   const [question, setQuestions] = useState([]);
   const [limit, setLimit] = useState(10);
   const [curr, setCurr] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isloading,setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 10000); // 10 seconds
+  
+    return () => clearTimeout(timer); // Clear timeout if the component unmounts
+  
+  }, []);
+
+
 
  
   useEffect(() => {
@@ -122,6 +134,13 @@ const QuestionPaper = () => {
 
   return (
     <>
+    {isloading ?(
+      <> <Break/></>
+    ):(
+
+   <>
+
+
       <Navbar />
       <div className="container mx-auto p-8 ">
         <h1 className="text-3xl font-semibold mb-6 ">
@@ -182,6 +201,8 @@ const QuestionPaper = () => {
           )}
         </div>
       </div>
+      </>
+      )}
     </>
   );
 };
