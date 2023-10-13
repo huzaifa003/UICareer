@@ -122,7 +122,7 @@ const Mbti = () => {
           backgroundColor: "green",
         }}
       />
-      <div className="grid grid-cols-2 gap-5 mt-5">
+      <div className="grid grid-cols-1 gap-5 mt-5">
         {questionRendering(curr, limit)}
       </div>
       <div className="flex justify-between mt-6">

@@ -22,7 +22,7 @@ const Navbar = () => {
     <>
 <nav className="bg-gradient-to-b from-[#184272] to-[#001834] p-4">
         <div className="container mx-auto flex justify-between items-center">
-          <div className="text-white font-semibold text-xl">ILM O IRFAN <span className='text-sm'>Technologies</span></div>
+          <div className="text-white font-semibold text-xl">MapTalent4Career</div>
           <ul className="flex space-x-4">
             <li>
               <a
@@ -32,7 +32,7 @@ const Navbar = () => {
                  <Link to='/Home'> Home</Link> 
               </a>
             </li>
-            <li>
+            {/* <li>
               <a
                 href="#"
                 className="text-white hover:text-blue-300 transition duration-300"
@@ -40,7 +40,7 @@ const Navbar = () => {
                 <Link to='/Test'> Take Test</Link> 
               
               </a>
-            </li>
+            </li> */}
             <li>
               <a
               onClick={()=> {auth.signOut()}}

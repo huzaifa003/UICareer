@@ -7,6 +7,9 @@ const QuestionPaper = () => {
   const [question, setQuestions] = useState([]);
   const [limit, setLimit] = useState(10);
   const [curr, setCurr] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+ 
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
@@ -138,7 +141,7 @@ const QuestionPaper = () => {
             backgroundColor: "green",
           }}
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-5">
           {questionRendering(curr, limit)}
         </div>
         <div className="flex justify-between mt-6">

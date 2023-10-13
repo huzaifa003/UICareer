@@ -3,7 +3,7 @@ import {AiFillFacebook, AiFillInstagram ,AiFillTwitterCircle} from 'react-icons/
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-white py-6">
+    <footer className="bg-gray-900 text-white py-6">
       <div className="container px-10 py-10 mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 text-center md:text-left">
         {/* Left Column (Company Info) */}
         <div className="md:col-span-1">

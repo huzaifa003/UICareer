@@ -8,7 +8,7 @@ const Hero = () => {
         <div className="py-20 px-6 md:px-12">
           <div className="container mx-auto">
             <h1 className="text-4xl md:text-5xl font-semibold text-left">
-              Welcome to the <span className="text-[#C70039] font-bold">ILM O IRFAN</span> Career Test
+              Welcome to the <span className="text-[#C70039] font-bold">MapTalent4Career</span> 
             </h1>
             <p className="mt-4 text-lg md:text-xl text-left opacity-80">
               Unlock Your Potential, Shape Your Future!

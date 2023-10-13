@@ -12,7 +12,14 @@ const Disc = () => {
   const [isPrev, setIsPrev] = useState(true);
 
 
-  // Function to update the answersDict when a radio button is changed
+  useEffect(()=>{
+    setTimeout(()=>{
+      return(<>
+        <div>Loading....</div>
+      </>)
+    },20000)
+  },[])
+
   const handleRadioChange = (index, value) => {
     setAnswersDict((prevAnswersDict) => ({
       ...prevAnswersDict,
@@ -150,7 +157,7 @@ const Disc = () => {
           backgroundColor: "green",
         }}
       />
-      <div className="grid grid-cols-2 gap-5 mt-5">
+      <div className="grid grid-cols-1 gap-5 mt-5">
         {questionRendering(curr, limit)}
       </div>
       <div className="flex justify-between mt-6">
