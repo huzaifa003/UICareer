@@ -6,6 +6,8 @@ import { auth, db } from "../Components/FirebaseAuth";
 import { get, set, ref, onValue } from "@firebase/database";
 import { onAuthStateChanged } from "@firebase/auth";
 import { useNavigate } from 'react-router-dom';
+import Break from "../Components/Break";
+
 const Disc = () => {
   const [questions, setQuestions] = useState(null);
   const [answersDict, setAnswersDict] = useState({});
@@ -71,6 +73,19 @@ const Disc = () => {
   }
 
   // Function to update the answersDict when a radio button is changed
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 10000); // 10 seconds
+
+    return () => clearTimeout(timer); // Clear timeout if the component unmounts
+
+  }, []);
+
+
+
   const handleRadioChange = (index, value) => {
     setAnswersDict((prevAnswersDict) => ({
       ...prevAnswersDict,
@@ -83,9 +98,9 @@ const Disc = () => {
     setDraftColor("bg-gradient-to-b from-[#184272] to-[#001834] text-white px-4 py-2 rounded");
   };
 
-  
 
-  
+
+
   useEffect(() => {
 
     onAuthStateChanged(auth, (user) => {
@@ -106,7 +121,7 @@ const Disc = () => {
       setQuestions(response.data);
     };
 
-    
+
     fetchQuestion();
 
     getDraft();
@@ -218,64 +233,73 @@ const Disc = () => {
   }
 
   return (
-    <div className="container mx-auto mb-6 ">
-      <Navbar />
-      <h1 className="text-3xl font-semibold mb-6 mt-6 ">
-        Multiple Choice Questions
-      </h1>
-      <progress
-        className="my-progress-bar"
-        value={(Object.keys(answersDict).length / 24) * 100}
-        max={100}
-        min={0}
-        style={{
-          width: "100%",
-          height: "10px",
-          backgroundColor: "green",
-        }}
-      />
-      <div className="grid grid-cols-2 gap-5 mt-5">
-        {questionRendering(curr, limit)}
-      </div>
-      <div className="flex justify-between mt-6">
+    <>
+      {isLoading ? (
+        <div><Break /></div>
+      ) : (
+        <div className=" mx-auto mb-6 ">
+          <Navbar />
+          <div className="px-10">
+            <h1 className="text-3xl font-semibold mb-6 mt-6 ">
+              Multiple Choice Questions
+            </h1>
+            <progress
+              className="my-progress-bar"
+              value={(Object.keys(answersDict).length / 24) * 100}
+              max={100}
+              min={0}
+              style={{
+                width: "100%",
+                height: "10px",
+                backgroundColor: "green",
+              }}
+            />
+            <div className="grid grid-cols-1 gap-5 mt-5">
+              {questionRendering(curr, limit)}
+            </div>
+            <div className="flex justify-between mt-6">
+              <Link to="/Home">
+                <button onClick={saveDraft} className={draftColor}>
+                  Save as Draft
+                </button>
 
-        <button onClick={saveDraft} className={draftColor}>
-          Save as Draft
-        </button>
-
-        <div className="flex gap-5">
-          {limit !== 10 && isPrev && (
-            <button
-              className="bg-blue-600 p-2 text-white rounded-md"
-              onClick={OnPrev}
-            >
-              Previous Question
-            </button>
-          )}
-          {limit < 24 && isNext && (
-            <button
-              className="bg-blue-600 p-2 text-white rounded-md"
-              onClick={OnNext}
-            >
-              Next Question
-            </button>
-          )}
+              </Link>
+              <div className="flex gap-5">
+                {limit !== 10 && isPrev && (
+                  <button
+                    className="bg-blue-600 p-2 text-white rounded-md"
+                    onClick={OnPrev}
+                  >
+                    Previous Question
+                  </button>
+                )}
+                {limit < 24 && isNext && (
+                  <button
+                    className="bg-blue-600 p-2 text-white rounded-md"
+                    onClick={OnNext}
+                  >
+                    Next Question
+                  </button>
+                )}
+              </div>
+              {Object.keys(answersDict).length === 24 && (
+                <>
+                  <Link to="/Result">
+                    <button
+                      className={`bg-[#C70039] text-white px-4 py-2 rounded  `}
+                      onClick={postAnswers}
+                    >
+                      View Result
+                    </button>
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
         </div>
-        {Object.keys(answersDict).length === 24 && (
-          <>
-            <Link to="/Result">
-              <button
-                className={`bg-[#C70039] text-white px-4 py-2 rounded  `}
-                onClick={postAnswers}
-              >
-                View Result
-              </button>
-            </Link>
-          </>
-        )}
-      </div>
-    </div>
+      )}
+    </>
   );
-};
+}
 
 export default Disc;

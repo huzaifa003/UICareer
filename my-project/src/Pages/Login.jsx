@@ -21,7 +21,7 @@ const Login = () => {
         // User is signed out
         // ...
       }
-    });
+    }); 
   },[])
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

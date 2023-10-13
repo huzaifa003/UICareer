@@ -12,6 +12,11 @@ import { useNavigate } from 'react-router-dom';
 import { app, auth } from '../Components/FirebaseAuth';
 import axios from 'axios';
 import Loading from '../Components/Loading';
+import ListScope from '../Components/ListScope';
+import Tutorial from '../Components/Tutorial';
+import TestTypes from '../Components/TestTypes';
+import BuyPremium from '../Components/BuyPremium';
+import CareerRecommendations from '../Components/CareerRecomendation';
 const featuresData = [
   {
     img: testImg,
@@ -98,9 +103,14 @@ const Home = () => {
           {console.log(url)}
           <Navbar />
           <Hero />
-          {featuresData.map((feature, uniqueKey) => (
+          {/* {featuresData.map((feature, uniqueKey) => (
             <Feature key={uniqueKey} text={text} url={url} {...feature} />
-          ))}
+          ))} */}
+          <ListScope/>
+          <Tutorial/>
+          <TestTypes/>
+          <CareerRecommendations/>
+          <BuyPremium/>
           <Footer />
         </div>
       

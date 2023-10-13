@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { db } from "../Components/FirebaseAuth";
 import { set, ref } from "@firebase/database";
+import Break from "../Components/Break";
+
 const QuestionPaper = () => {
 
   async function writeUserData(personality, careerMap) {
@@ -25,6 +27,20 @@ const QuestionPaper = () => {
   const [question, setQuestions] = useState([]);
   const [limit, setLimit] = useState(10);
   const [curr, setCurr] = useState(0);
+  const [isloading,setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 10000); // 10 seconds
+  
+    return () => clearTimeout(timer); // Clear timeout if the component unmounts
+  
+  }, []);
+
+
+
+ 
   useEffect(() => {
     console.log(db);
     const fetchQuestion = async () => {
@@ -140,6 +156,13 @@ const QuestionPaper = () => {
 
   return (
     <>
+    {isloading ?(
+      <> <Break/></>
+    ):(
+
+   <>
+
+
       <Navbar />
       <div className="container mx-auto p-8 ">
         <h1 className="text-3xl font-semibold mb-6 ">
@@ -159,7 +182,7 @@ const QuestionPaper = () => {
             backgroundColor: "green",
           }}
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-5">
           {questionRendering(curr, limit)}
         </div>
         <div className="flex justify-between mt-6">
@@ -200,6 +223,8 @@ const QuestionPaper = () => {
             )}
         </div>
       </div>
+      </>
+      )}
     </>
   );
 };
