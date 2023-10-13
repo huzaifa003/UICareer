@@ -2,24 +2,21 @@ import React from 'react';
 import Navbar from '../Components/Navbar';
 
 const Result = () => {
-
   const careerRecommendations = [
     {
-      career: JSON.parse(localStorage.getItem('test1'))[0],
+      career: localStorage.getItem('test1') ? JSON.parse(localStorage.getItem('test1'))[0] : "No data found",
       priority: 'High',
     },
     {
-      career: JSON.parse(localStorage.getItem('test2'))[0],
+      career: localStorage.getItem('test2') ? JSON.parse(localStorage.getItem('test2'))[0] : "No data found",
       priority: 'Medium',
     },
     {
-      career: JSON.parse(localStorage.getItem('test3'))[0],
+      career: localStorage.getItem('test3') ? JSON.parse(localStorage.getItem('test3'))[0] : "No data found",
       priority: 'Low',
     },
     // Add more career recommendations here...
   ];
-  const data = JSON.parse(localStorage.getItem('test1'))
-  console.log(JSON.parse(localStorage.getItem('test1'))[0]);
 
   return (
     <>
