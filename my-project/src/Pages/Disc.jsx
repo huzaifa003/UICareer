@@ -3,7 +3,7 @@ import Navbar from "../Components/Navbar";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { auth, db } from "../Components/FirebaseAuth";
-import { get, set, ref, onValue } from "@firebase/database";
+import { get, set, ref } from "@firebase/database";
 import { onAuthStateChanged } from "@firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import Break from "../Components/Break";
@@ -55,10 +55,6 @@ const Disc = () => {
 
   }
   async function writeUserData(personality, careerMap) {
-
-    await set(ref(db, "users/" + username), {
-      "progress": 3
-    })
     console.log("-------------------------------")
     console.log(personality, careerMap, answersDict)
     await set(ref(db, 'users/' + username + "/disc"), {

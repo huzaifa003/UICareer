@@ -1,7 +1,13 @@
-import React from 'react';
+import { onAuthStateChanged } from '@firebase/auth';
+import { set, ref } from '@firebase/database';
+import React, { useEffect, useState } from 'react';
+import { app, db, auth } from '../Components/FirebaseAuth';
 import Navbar from '../Components/Navbar';
 
 const Result = () => {
+
+  const [username, setUsername] = useState('');
+
   const careerRecommendations = [
     {
       career: localStorage.getItem('test1') ? JSON.parse(localStorage.getItem('test1'))[0] : "No data found",
@@ -17,6 +23,31 @@ const Result = () => {
     },
     // Add more career recommendations here...
   ];
+
+  useEffect(() => {
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUsername(user.email.split("@")[0])
+        console.log(username)
+      }
+      else {
+        navigate("/")
+      }
+    })
+    const writeData = async () => {
+      await set(ref(db, "users/" + username + "/careerMappings"),
+        {
+          careerRecommendations
+        }
+      )
+    }
+
+    writeData()
+  }, [username])
+
+
+
 
   return (
     <>
@@ -39,13 +70,12 @@ const Result = () => {
                   {recommendation.career}
                 </h2>
                 <span
-                  className={`text-sm px-3 py-1 rounded-full ${
-                    recommendation.priority === 'High'
+                  className={`text-sm px-3 py-1 rounded-full ${recommendation.priority === 'High'
                       ? 'bg-red-500 text-white'
                       : recommendation.priority === 'Medium'
-                      ? 'bg-yellow-500 text-gray-900'
-                      : 'bg-green-500 text-white'
-                  }`}
+                        ? 'bg-yellow-500 text-gray-900'
+                        : 'bg-green-500 text-white'
+                    }`}
                 >
                   {recommendation.priority}
                 </span>

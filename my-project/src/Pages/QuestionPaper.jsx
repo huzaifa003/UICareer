@@ -2,61 +2,131 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../Components/Navbar";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { db } from "../Components/FirebaseAuth";
-import { set, ref } from "@firebase/database";
+import { auth, db } from "../Components/FirebaseAuth";
+import { set, ref, get } from "@firebase/database";
+import { onAuthStateChanged } from "@firebase/auth";
 import Break from "../Components/Break";
-
+import { useNavigate } from 'react-router-dom'
 const QuestionPaper = () => {
 
-  async function writeUserData(personality, careerMap) {
-    
-    await set(ref(db, "users/" + email), {
-      "progress": 1
+
+
+  const [draftColor, setDraftColor] = useState("bg-gradient-to-b from-[#184272] to-[#001834] text-white px-4 py-2 rounded")
+  const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState('')
+  const [answersDict, setAnswersDict] = useState({})
+  const navigate = useNavigate();
+
+
+  async function saveDraft() {
+    await set(ref(db, "users/" + username + "/big5"), {
+      "answersDict": answersDict
+    }).then((value) => {
+      setDraftColor("bg-green text-white px-4 py-2 rounded")
     })
-    await set(ref(db, 'users/' + email + "/big5"), {
+    setDraftColor("bg-green-500 text-white px-4 py-2 rounded")
+  }
+
+  function getDraft() {
+    console.log('users/' + username + "/big5")
+    get(ref(db, "users/" + username + "/big5")).then((snapshot) => {
+      
+      if (snapshot.exists()) {
+        setAnswersDict(snapshot.val().answersDict)
+        setAnswers(Object.values(snapshot.val().answersDict))
+        setDraftColor("bg-green-500 text-white px-4 py-2 rounded")
+      }
+      else {
+        console.log(snapshot.val())
+        console.log("No Draft Available");
+      }
+
+    })
+
+    // if (snapshot.exists()) {
+    //   setAnswersDict(snapshot.val().answersDict)
+    //   setAnswers(Object.values(snapshot.val().answersDict))
+    //   setDraftColor("bg-green-500 text-white px-4 py-2 rounded")
+    // }
+    // else {
+
+    //   console.log(snapshot.val())
+    //   console.log("No Draft Available");
+    // }
+
+    // get(child(dbRef, `users/${userId}`)).then((snapshot) => {
+    //   if (snapshot.exists()) {
+    //     console.log(snapshot.val());
+    //   } else {
+    //     console.log("No data available");
+    //   }
+    // }).catch((error) => {
+    //   console.error(error);
+    // });
+
+  }
+  async function writeUserData(personality, careerMap) {
+
+  
+    console.log("-------------------------------")
+    // console.log(personality, careerMap, newA)
+    await set(ref(db, 'users/' + username + "/big5"), {
       "personality": personality,
       "careerMap": careerMap,
-    }).then((response)=>{
+      "answersDict": answersDict,
+
+    }).then((response) => {
       console.log(response)
-      localStorage.setItem({"hello": response});
+
     })
   }
+
 
 
 
   const [question, setQuestions] = useState([]);
   const [limit, setLimit] = useState(10);
   const [curr, setCurr] = useState(0);
-  const [isloading,setIsLoading] = useState(true)
+  const [isloading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 10000); // 10 seconds
-  
+    }, 1); // 10 seconds
+
     return () => clearTimeout(timer); // Clear timeout if the component unmounts
-  
+
   }, []);
 
 
 
- 
-  useEffect(() => {
-    console.log(db);
-    const fetchQuestion = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:3000/big5/questions"
-        );
-        setQuestions(response.data);
 
-      } catch (error) {
-        console.error("Error fetching questions:", error);
+  useEffect(() => {
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUsername(user.email.split("@")[0])
+        console.log(username)
       }
+      else {
+        navigate("/")
+      }
+    })
+
+    console.log(loading);
+
+    const fetchQuestion = async () => {
+      const response = await axios.get("http://localhost:3000/big5/questions");
+      console.log(response.data);
+      setQuestions(response.data);
     };
 
+
     fetchQuestion();
-  }, []);
+
+    getDraft();
+    setLoading(false);
+  }, [username]);
 
   const options = {
     A: "Strongly Agree",
@@ -70,10 +140,13 @@ const QuestionPaper = () => {
   const [isNext, setIsNext] = useState(true);
   const [isPrev, setIsPrev] = useState(true);
   const handleRadioChange = (index, option, value) => {
+    console.log(answersDict);
     const newAnswers = [...answers];
     newAnswers[index + curr] = value; // Update the answers array based on the current question's index
     setAnswers(newAnswers);
-    console.log("HELO");
+    answersDict[index] = {"answer" : value, "questionNumber" : index + 1}
+    setDraftColor("bg-gradient-to-b from-[#184272] to-[#001834] text-white px-4 py-2 rounded")
+
   };
 
   const OnNext = () => {
@@ -96,13 +169,23 @@ const QuestionPaper = () => {
         answers: Object.values(answers),
       };
 
+      const answersOnly = []
+      for (let index = 0; index < answersDict.length; index++) {
+        const element = answersDict[index];
+        console.log(element);
+        answersOnly.push(element.answer);
+      }
+
+      console.log(answersOnly);
+      
       const response = await axios.post(
         "http://localhost:3000/big5",
-        answersData
+        {"answers":answersOnly}
       );
 
       localStorage.setItem("test1", JSON.stringify(response.data.career));
       const res = await writeUserData(response.data.personality, response.data.career);
+      await writeUserData(response.data.personality, response.data.career)
       console.log(res);
     } catch (error) {
       console.error("Error posting answers:", error);
@@ -131,14 +214,15 @@ const QuestionPaper = () => {
                       name={index + curr + 1 + option}
                       value={index + curr + 1 + option}
                       checked={
-                        answers[index + curr] === index + 1 + curr + option
+                        answersDict[index + curr]?.answer == (index+ curr +1) + option
                       }
+                      
                       className="mr-2 "
                       onChange={() =>
                         handleRadioChange(
-                          index,
+                          index + curr,
                           option,
-                          index + 1 + curr + option
+                          index + curr + 1 + option
                         )
                       }
                     />
@@ -156,74 +240,77 @@ const QuestionPaper = () => {
 
   return (
     <>
-    {isloading ?(
-      <> <Break/></>
-    ):(
+      {console.log(username)}
+      {console.log(answersDict)}
+      {console.log('users/' + username + "/big5")}
+      {isloading ? (
+        <> <Break /></>
+      ) : (
 
-   <>
+        <>
 
 
-      <Navbar />
-      <div className="container mx-auto p-8 ">
-        <h1 className="text-3xl font-semibold mb-6 ">
-          Multiple Choice Questions
-        </h1>
-        <progress
-          className="my-progress-bar"
-          value={
-            (answers.filter((element) => element !== undefined).length / 50) *
-            100
-          }
-          max={100}
-          min={0}
-          style={{
-            width: "100%",
-            height: "10px",
-            backgroundColor: "green",
-          }}
-        />
-        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-5">
-          {questionRendering(curr, limit)}
-        </div>
-        <div className="flex justify-between mt-6">
-          {/* <Link to="/Home">
-            <button className="bg-gradient-to-b from-[#184272] to-[#001834] text-white px-4 py-2 rounded hover:bg-blue-600">
-              Save as Draft
-            </button>
-          </Link> */}
-          <div className="flex gap-5">
-            {limit !== 10 && isPrev && (
-              <button
-                className="bg-blue-600 p-2 text-white rounded-md"
-                onClick={OnPrev}
-              >
-                Previous Question
+          <Navbar />
+          <div className="container mx-auto p-8 ">
+            <h1 className="text-3xl font-semibold mb-6 ">
+              Multiple Choice Questions
+            </h1>
+            <progress
+              className="my-progress-bar"
+              value={
+                (answers.filter((element) => element !== undefined).length / 50) *
+                100
+              }
+              max={100}
+              min={0}
+              style={{
+                width: "100%",
+                height: "10px",
+                backgroundColor: "green",
+              }}
+            />
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-5">
+              {questionRendering(curr, limit)}
+            </div>
+            <div className="flex justify-between mt-6">
+
+              <button className={draftColor} onClick={saveDraft}>
+                Save as Draft
               </button>
-            )}
-            {limit < 50 && isNext && (
-              <button
-                className="bg-blue-600 p-2 text-white rounded-md"
-                onClick={OnNext}
-              >
-                Next Question
-              </button>
-            )}
+
+              <div className="flex gap-5">
+                {limit !== 10 && isPrev && (
+                  <button
+                    className="bg-blue-600 p-2 text-white rounded-md"
+                    onClick={OnPrev}
+                  >
+                    Previous Question
+                  </button>
+                )}
+                {limit < 50 && isNext && (
+                  <button
+                    className="bg-blue-600 p-2 text-white rounded-md"
+                    onClick={OnNext}
+                  >
+                    Next Question
+                  </button>
+                )}
+              </div>
+              {(answers.filter((element) => element !== undefined).length / 50) *
+                100 ===
+                100 && (
+                  <>
+                    <button
+                      className={`bg-[#C70039] text-white px-4 py-2 rounded `}
+                      onClick={postAnswers}
+                    >
+                      <Link to="/Mbti">Go to Next Test</Link>
+                    </button>
+                  </>
+                )}
+            </div>
           </div>
-          {(answers.filter((element) => element !== undefined).length / 50) *
-            100 ===
-            100 && (
-              <>
-                <button
-                  className={`bg-[#C70039] text-white px-4 py-2 rounded `}
-                  onClick={postAnswers}
-                >
-                  <Link to="/Mbti">Go to Next Test</Link>
-                </button>
-              </>
-            )}
-        </div>
-      </div>
-      </>
+        </>
       )}
     </>
   );

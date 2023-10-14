@@ -223,8 +223,8 @@ app.post("/big5", (req, res) => {
     console.log(answers);
     // const sorted = answers.sort();
 
-    if (answers.length < 50){
-        res.send(401,"Invalid Data");
+    if (answers.length < 50) {
+        res.send(401, "Invalid Data");
     }
     const answerKey = {}
     answers.forEach(answer => {
@@ -249,37 +249,47 @@ app.post("/big5", (req, res) => {
         openness: "Openness"
     }
     const mapping = { "extroversion": extroversion, "agreeableness": agreeableness, "consceientiousness": conscientiousness, "neurotisicsm": neurotisicsm, "openness": openness }
-    
 
-    const personalityScores = [extroversion,agreeableness,conscientiousness,neurotisicsm,openness];
-    
+    const personalityDescription = {
+        "Openness": "A trait characterized by creativity, curiosity, and an eagerness to explore new ideas, experiences, and ways of thinking.",
+        "Conscientiousness": "The tendency to be organized, responsible, reliable, and goal-oriented, reflecting a person's self-discipline and dependability.",
+        "Extraversion": "Describes outgoing, sociable, and energetic individuals who enjoy social interactions and seek stimulation from external sources, often displaying assertiveness and positive emotions.",
+        "Agreeableness": "Reflects a person's tendency to be compassionate, cooperative, and empathetic, prioritizing harmony and positive social relationships, and avoiding conflict.",
+        "Neurotisicsm": "Indicates the degree of emotional instability, with high levels characterized by anxiety, moodiness, and emotional reactivity, while low levels signify emotional resilience and stability."
+    }
+
+
+    const personalityScores = [extroversion, agreeableness, conscientiousness, neurotisicsm, openness];
+
     const maxInd = personalityScores.indexOf(Math.max(...personalityScores))
     console.log(personalityScores)
     console.log(maxInd)
     let personality;
-    if (maxInd == 0){
+    if (maxInd == 0) {
         personality = "Extroversion"
     }
-    else if (maxInd == 1){
+    else if (maxInd == 1) {
         personality = "Agreeableness"
     }
-    else if (maxInd == 2){
+    else if (maxInd == 2) {
         personality = "Conscientiousness"
     }
-    else if (maxInd == 3){
+    else if (maxInd == 3) {
         personality = "Neurotisicsm"
     }
-    else if (personality == 4){
+    else if (personality == 4) {
         personality = "Openness"
     }
-    
+
 
     const careerMap = careerSuggestions[personality]
     console.log(careerSuggestions['Neurotisicsm'])
-    res.send(200, { personality,  "career" :careerMap });
+    res.json({ "personality" : personality + ": " + personalityDescription[personality], "career": careerMap });
 })
 //So the proble is prolly the local storage try withprops and it should work, local storage turns it into string
 // we cant use props next page pr redirect honay k lea routing use ki ha and i dont know how to pass data via routing :D
+
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
