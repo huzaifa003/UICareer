@@ -67,9 +67,7 @@ const QuestionPaper = () => {
   }
   async function writeUserData(personality, careerMap) {
 
-    await set(ref(db, "users/" + username), {
-      "progress": 3
-    })
+  
     console.log("-------------------------------")
     // console.log(personality, careerMap, newA)
     await set(ref(db, 'users/' + username + "/big5"), {
