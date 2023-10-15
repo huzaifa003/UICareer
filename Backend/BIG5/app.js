@@ -277,14 +277,14 @@ app.post("/big5", (req, res) => {
     else if (maxInd == 3) {
         personality = "Neurotisicsm"
     }
-    else if (personality == 4) {
+    else if (maxInd == 4) {
         personality = "Openness"
     }
 
 
     const careerMap = careerSuggestions[personality]
-    console.log(careerSuggestions['Neurotisicsm'])
-    res.json({ "personality" : personality + ": " + personalityDescription[personality], "career": careerMap });
+    console.log(personality + ": " + personalityDescription[personality])
+    res.send(200, { "personality" : personality + ": " + personalityDescription[personality], "career": careerMap });
 })
 //So the proble is prolly the local storage try withprops and it should work, local storage turns it into string
 // we cant use props next page pr redirect honay k lea routing use ki ha and i dont know how to pass data via routing :D

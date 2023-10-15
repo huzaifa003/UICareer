@@ -63,14 +63,17 @@ const QuestionPaper = () => {
   }
   async function writeUserData(personality, careerMap) {
     console.log("-------------------------------");
-    // console.log(personality, careerMap, newA)
+
+    console.log(personality, careerMap)
     await set(ref(db, "users/" + username + "/big5"), {
       personality: personality,
       careerMap: careerMap,
       answersDict: answersDict,
     }).then((response) => {
       console.log(response);
+      
     });
+
   }
 
   const [question, setQuestions] = useState([]);
@@ -165,11 +168,13 @@ const QuestionPaper = () => {
         answers: answersOnly,
       });
 
-      localStorage.setItem("test1", JSON.stringify(response.data.career));
+      localStorage.setItem("test2", JSON.stringify(response.data.career));
+      console.log(response);
       const res = await writeUserData(
         response.data.personality,
         response.data.career
       );
+      
       await writeUserData(response.data.personality, response.data.career);
       console.log(res);
     } catch (error) {

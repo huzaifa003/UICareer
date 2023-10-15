@@ -132,7 +132,7 @@ const Disc = () => {
       const response = await axios.post("http://localhost:3002/disc", {
         answers,
       });
-      localStorage.setItem("test3", JSON.stringify(response.data.career))
+      localStorage.setItem("test1", JSON.stringify(response.data.career))
       const listData = []
       listData.push(JSON.parse(localStorage.getItem('test1')))
       listData.push(JSON.parse(localStorage.getItem('test2')))
