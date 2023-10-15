@@ -16,7 +16,7 @@ const Hero = () => {
             </p>
            
             <button className="bg-[#C70039] hover:bg-red-900 text-white font-semibold px-6 py-3 mt-8 rounded-md transition duration-300">
-              <Link to="/Test">Start Your Journey</Link>
+              <Link to="/Disc">Start Your Journey</Link>
             </button>
           </div>
         </div>

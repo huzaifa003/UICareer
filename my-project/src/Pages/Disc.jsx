@@ -7,6 +7,8 @@ import { get, set, ref } from "@firebase/database";
 import { onAuthStateChanged } from "@firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import Break from "../Components/Break";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 
 const Disc = () => {
   const [questions, setQuestions] = useState(null);
@@ -235,10 +237,43 @@ const Disc = () => {
       ) : (
         <div className=" mx-auto mb-6 ">
           <Navbar />
-          <div className="px-10">
-            <h1 className="text-3xl font-semibold mb-6 mt-6 ">
+          <div className="px-10 mt-5">
+          <Tabs
+            aria-label="disabled tabs example"
+            style={{
+              backgroundColor: "#f4f4f4",
+              padding: "10px",
+              borderRadius: "5px",
+            }}
+          >
+           <Tab
+              label="DISC"
+              style={{
+                textTransform: "none",
+                minWidth: 0,
+                padding: "6px 15px",
+                marginRight: 15,
+                fontWeight: 500,
+                fontSize: "16px",
+                color: "#333",
+                "&:hover": {
+                  color: "#555",
+                  opacity: 1,
+                },
+                "&$selected": {
+                  color: "#000",
+                  fontWeight: 600,
+                },
+              }}
+            />
+            <Tab label={'BIG 5 '} disabled style={{ color: "#999" }} />
+            <Tab label={'MBTI '} disabled style={{ color: "#999" }} />
+           
+            
+          </Tabs>
+            {/* <h1 className="text-3xl font-semibold mb-6 mt-6 ">
               Multiple Choice Questions
-            </h1>
+            </h1> */}
             <progress
               className="my-progress-bar"
               value={(Object.keys(answersDict).length / 24) * 100}
@@ -280,12 +315,12 @@ const Disc = () => {
               </div>
               {Object.keys(answersDict).length === 24 && (
                 <>
-                  <Link to="/Result">
+                  <Link to="/Big5">
                     <button
                       className={`bg-[#C70039] text-white px-4 py-2 rounded  `}
                       onClick={postAnswers}
                     >
-                      View Result
+                      Next Test
                     </button>
                   </Link>
                 </>

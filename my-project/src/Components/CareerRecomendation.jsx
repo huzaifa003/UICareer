@@ -13,7 +13,7 @@ const CareerRecommendations = () => {
               Explore our tutorial on multiple choice questions. Learn how to create engaging and effective MCQs for your assessments and quizzes. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat harum earum qui?
             </p>
             <button className="bg-[#C70039] hover:bg-red-900 text-white font-semibold px-6 py-3 mt-8 rounded-md transition duration-300">
-              <Link to="/Test">Give a Try</Link>
+              <Link to="/Disc">Give a Try</Link>
             </button>
           </div>
           <div className="relative">
