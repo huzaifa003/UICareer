@@ -49,7 +49,7 @@ const Login = () => {
   return (
     <div className="flex justify-center items-center h-screen bg-gradient-to-b from-[#184272] to-[#001834]">
       <div className="bg-white p-8 rounded-md shadow-lg w-full sm:w-96">
-        <h2 className='flex justify-center items-center bg-red' style={{ color: 'red' }}>{error}</h2>;
+        <h2 className='flex justify-center items-center bg-red' style={{ color: 'red' }}>{error}</h2>
         <h3 className="text-3xl font-semibold mb-4 text-center">Login</h3>
 
         <div className="mb-4">

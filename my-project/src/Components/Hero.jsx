@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import headerImg from '../assets/header.jpg';
-const Hero = () => {
+const Hero = ({url}) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 items-center">
         {/* Left Column (Text) */}
@@ -16,7 +16,7 @@ const Hero = () => {
             </p>
            
             <button className="bg-[#C70039] hover:bg-red-900 text-white font-semibold px-6 py-3 mt-8 rounded-md transition duration-300">
-              <Link to="/Disc">Start Your Journey</Link>
+              <Link to={url}>Start Your Journey</Link>
             </button>
           </div>
         </div>
