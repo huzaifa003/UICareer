@@ -3,8 +3,18 @@ import { set, ref } from '@firebase/database';
 import React, { useEffect, useState } from 'react';
 import { app, db, auth } from '../Components/FirebaseAuth';
 import Navbar from '../Components/Navbar';
+import ResultLoading from '../Components/ResultLoading';
 
 const Result = () => {
+
+  const [isLoading,setIsLoading] = useState(true)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 10000); // 10 seconds
+
+    return () => clearTimeout(timer); // Clear timeout if the component unmounts
+  }, []);
 
   const [username, setUsername] = useState('');
 
@@ -51,6 +61,8 @@ const Result = () => {
 
   return (
     <>
+    {isLoading===false ? (
+<>
       <Navbar />
 
       <div className="container mx-auto p-8">
@@ -84,8 +96,12 @@ const Result = () => {
           ))}
         </ul>
       </div>
+    
     </>
+    ) :(<ResultLoading/>)}
+    </> 
   );
+  
 };
 
 export default Result;
