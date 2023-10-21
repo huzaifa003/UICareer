@@ -8,7 +8,7 @@ const Tutorial = ({url ,text}) => {
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
           <div className="text-center md:text-left">
-            <h2 className="text-4xl font-bold mb-4">Multiple Choice Questions</h2>
+            <h2 className="text-4xl font-bold mb-4">Tutorial</h2>
             <p className="text-xl leading-7 mb-4">
               Explore our tutorial on multiple choice questions. Learn how to create engaging and effective MCQs for your assessments and quizzes. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat harum earum qui?
             </p>

@@ -2,7 +2,8 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { app, auth } from '../Components/FirebaseAuth';
 import { onAuthStateChanged } from 'firebase/auth';
-
+import {AiFillHome} from 'react-icons/ai'
+import {RiLogoutBoxFill} from 'react-icons/ri'
 const Navbar = () => {
   useEffect(()=>{
     onAuthStateChanged(auth, (user) => {
@@ -29,7 +30,9 @@ const Navbar = () => {
                 href="#"
                 className="text-white hover:text-blue-300 transition duration-300"
               >
-                 <Link to='/Home'> Home</Link> 
+                 <Link className='flex items-center gap-2' to='/Home'>
+                 <AiFillHome/>
+                  Home</Link> 
               </a>
             </li>
             {/* <li>
@@ -47,7 +50,9 @@ const Navbar = () => {
                 href="#"
                 className="text-white hover:text-blue-300 transition duration-300"
               >
-                <Link to='/'> Logout</Link> 
+                <Link className='flex items-center gap-2' to='/'> 
+                <RiLogoutBoxFill/>
+                Logout</Link> 
               
               </a>
             </li>

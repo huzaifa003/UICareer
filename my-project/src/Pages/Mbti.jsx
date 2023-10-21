@@ -101,7 +101,7 @@ const Mbti = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 10000); // 10 seconds
+    }, 5000); // 10 seconds
 
     return () => clearTimeout(timer); // Clear timeout if the component unmounts
   }, []);
@@ -263,10 +263,10 @@ const Mbti = () => {
               borderRadius: "5px",
             }}
           >
-           <Tab label={'DISC ✅'} disabled style={{ color: "#999" }} />
-            <Tab label={'BIG 5 ✅'} disabled style={{ color: "#999" }} />
+           <Tab label={'Personality Test ✅'} disabled style={{ color: "#999" }} />
+            <Tab label={'Aptitude Test ✅'} disabled style={{ color: "#999" }} />
             <Tab
-              label="MBTI"
+              label="Psychology Test"
               style={{
                 textTransform: "none",
                 minWidth: 0,

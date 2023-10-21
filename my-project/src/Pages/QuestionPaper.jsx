@@ -84,7 +84,7 @@ const QuestionPaper = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 10000); // 10 seconds
+    }, 5000); // 10 seconds
 
     return () => clearTimeout(timer); 
   }, []);
@@ -260,10 +260,10 @@ const QuestionPaper = () => {
       aria-label="disabled tabs example"
       style={{ backgroundColor: '#f4f4f4', padding: '10px', borderRadius: '5px' }}
     >
-      <Tab label={'DISC ✅'} disabled style={{ color: '#999' }} />
+      <Tab label={'Personality Test ✅'} disabled style={{ color: '#999' }} />
      
       <Tab
-        label="BIG5"
+        label="Aptitude Test"
         style={{
           textTransform: 'none',
           minWidth: 0,
@@ -282,7 +282,7 @@ const QuestionPaper = () => {
           },
         }}
       />
-       <Tab label="MBTI" disabled style={{ color: '#999' }} />
+       <Tab label="Psychology Test" disabled style={{ color: '#999' }} />
      
     </Tabs>
            
@@ -323,6 +323,7 @@ const QuestionPaper = () => {
                 )}
                 {limit < 50 && isNext && (
                   <button
+                  
                     className="bg-blue-600 p-2 text-white rounded-md"
                     onClick={OnNext}
                   >
