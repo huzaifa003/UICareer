@@ -102,15 +102,15 @@ const Home = () => {
         <div>
           {console.log(url)}
           <Navbar />
-          <Hero />
+          <Hero url={url} />
           {/* {featuresData.map((feature, uniqueKey) => (
             <Feature key={uniqueKey} text={text} url={url} {...feature} />
           ))} */}
           <ListScope/>
-          <Tutorial/>
+          <Tutorial url={url} text={"Try it by yourself"}/>
           <TestTypes/>
-          <CareerRecommendations/>
-          <BuyPremium/>
+          <CareerRecommendations url={url} text={"Check your Career"}/>
+          <BuyPremium url={"https://buy.stripe.com/test_3csg213h3a7R42k9AA?prefilled_email="+email}/>
           <Footer />
         </div>
       

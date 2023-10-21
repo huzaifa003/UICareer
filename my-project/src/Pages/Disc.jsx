@@ -76,7 +76,7 @@ const Disc = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 10000); // 10 seconds
+    }, 5000); // 10 seconds
 
     return () => clearTimeout(timer); // Clear timeout if the component unmounts
 
@@ -247,7 +247,7 @@ const Disc = () => {
             }}
           >
            <Tab
-              label="DISC"
+              label="Personality Test"
               style={{
                 textTransform: "none",
                 minWidth: 0,
@@ -266,8 +266,8 @@ const Disc = () => {
                 },
               }}
             />
-            <Tab label={'BIG 5 '} disabled style={{ color: "#999" }} />
-            <Tab label={'MBTI '} disabled style={{ color: "#999" }} />
+            <Tab label={'Aptitude Test'} disabled style={{ color: "#999" }} />
+            <Tab label={'Psychology Test '} disabled style={{ color: "#999" }} />
            
             
           </Tabs>

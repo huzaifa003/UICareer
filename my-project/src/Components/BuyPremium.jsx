@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-const BuyPremium = () => {
+const BuyPremium = ({url}) => {
   const containerVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
@@ -35,7 +35,7 @@ const BuyPremium = () => {
             <div className='text-center'>
 
             <button className=" bg-[#C70039] hover:bg-red-900 text-white font-semibold px-6 py-3 mt-8 rounded-md transition duration-300">
-              <Link to="/Test">Subscribe</Link>
+              <Link to={url}>Subscribe</Link>
             </button>
             </div>
           </motion.div>

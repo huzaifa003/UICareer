@@ -9,7 +9,7 @@ const TestTypes = () => {
             <div className="h-12 w-12 flex items-center justify-center rounded-full bg-white text-blue-800 mb-4 text-lg font-semibold">
               1
             </div>
-            <div className="text-xl font-semibold mb-4">BIG5 Personality Test</div>
+            <div className="text-xl font-semibold mb-4"> Personality Test</div>
             <p className="text-white text-center leading-relaxed">
               Discover your personality traits and characteristics with the BIG5 Personality Test.
             </p>
@@ -18,7 +18,7 @@ const TestTypes = () => {
             <div className="h-12 w-12 flex items-center justify-center rounded-full bg-white text-blue-800 mb-4 text-lg font-semibold">
               2
             </div>
-            <div className="text-xl font-semibold mb-4">MTBI Test</div>
+            <div className="text-xl font-semibold mb-4">Amplitude Test</div>
             <p className="text-white text-center leading-relaxed">
               Explore your personality and preferences using the MTBI test.
             </p>
@@ -27,7 +27,7 @@ const TestTypes = () => {
             <div className="h-12 w-12 flex items-center justify-center rounded-full bg-white text-blue-800 mb-4 text-lg font-semibold">
               3
             </div>
-            <div className="text-xl font-semibold mb-4">DISC Assessment</div>
+            <div className="text-xl font-semibold mb-4">Psychology Test</div>
             <p className="text-white text-center leading-relaxed">
               Gain insights into your behavior and communication style with the DISC assessment.
             </p>
